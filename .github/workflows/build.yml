@@ -1,4 +1,4 @@
-name: Build WinMerge AI
+name: Build WinMerge AI Simple
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -15,25 +15,13 @@ jobs:
         with:
           path: ai-files
 
-      - name: Copy AI Files
+      - name: Copy AI Files Only
         shell: cmd
         run: |
           copy ai-files\AIAutoMerge.h winmerge\Src\
           copy ai-files\AIAutoMerge.cpp winmerge\Src\
           copy ai-files\PropAIAutoMerge.h winmerge\Src\
           copy ai-files\PropAIAutoMerge.cpp winmerge\Src\
-
-      - name: Apply Patches
-        shell: pwsh
-        run: |
-          cd winmerge
-          $opt1 = "`ninline const String OPT_AI_AUTO_MERGE_ENABLED{ _T(`"Settings/AiAutoMergeEnabled`"s) };"
-          $opt2 = "inline const String OPT_AI_AUTO_MERGE_STRATEGY{ _T(`"Settings/AiAutoMergeStrategy`"s) };"
-          Add-Content Src/OptionsDef.h $opt1
-          Add-Content Src/OptionsDef.h $opt2
-          $content = Get-Content Src/OptionsInit.cpp -Raw
-          $content = $content -replace '(pOptions->InitOption\(OPT_ASK_MULTIWINDOW_CLOSE, true\);)', "`$1`n`tpOptions->InitOption(OPT_AI_AUTO_MERGE_ENABLED, false);`n`tpOptions->InitOption(OPT_AI_AUTO_MERGE_STRATEGY, 1);"
-          Set-Content Src/OptionsInit.cpp $content -NoNewline
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -46,7 +34,7 @@ jobs:
           cd winmerge
           nuget restore WinMerge.sln
 
-      - name: Build WinMerge
+      - name: Build WinMerge (Skip AI Integration)
         run: |
           cd winmerge
           msbuild WinMerge.sln /p:Configuration=Release /p:Platform=x64 /m /v:minimal
