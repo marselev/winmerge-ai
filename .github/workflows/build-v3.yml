@@ -1,0 +1,48 @@
+name: Build WinMerge AI v3
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout WinMerge
+        uses: actions/checkout@v4
+        with:
+          repository: winmerge/winmerge
+          path: winmerge
+
+      - name: Checkout AI Files
+        uses: actions/checkout@v4
+        with:
+          path: ai-files
+
+      - name: Copy AI Files
+        shell: cmd
+        run: |
+          copy ai-files\AIAutoMerge.h winmerge\Src\
+          copy ai-files\AIAutoMerge.cpp winmerge\Src\
+          copy ai-files\PropAIAutoMerge.h winmerge\Src\
+          copy ai-files\PropAIAutoMerge.cpp winmerge\Src\
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore Packages
+        run: |
+          cd winmerge
+          nuget restore WinMerge.sln
+
+      - name: Build WinMerge
+        run: |
+          cd winmerge
+          msbuild WinMerge.sln /p:Configuration=Release /p:Platform=x64 /m /v:minimal
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinMerge-AI-x64
+          path: |
+            winmerge/Build/x64/Release/WinMergeU.exe
+            winmerge/Build/x64/Release/*.dll
