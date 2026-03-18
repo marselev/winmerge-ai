@@ -1,0 +1,75 @@
+name: Build WinMerge with AI Auto Merge
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout WinMerge
+        uses: actions/checkout@v4
+        with:
+          repository: winmerge/winmerge
+          path: winmerge
+
+      - name: Create AI Auto Merge Files
+        shell: pwsh
+        run: |
+          # 创建 AIAutoMerge.h
+          @'
+#pragma once
+#include "UnicodeString.h"
+#include <vector>
+
+enum class AIAutoMergeStrategy { CONSERVATIVE=0, BALANCED=1, AGGRESSIVE=2, SMART=3 };
+
+struct AIAutoMergeResult {
+    bool success;
+    int mergedCount;
+    int conflictCount;
+    String message;
+};
+
+class AIAutoMergeManager {
+public:
+    AIAutoMergeManager() : m_enabled(false), m_strategy(AIAutoMergeStrategy::BALANCED) {}
+    void SetEnabled(bool e) { m_enabled = e; }
+    bool IsEnabled() const { return m_enabled; }
+    void SetStrategy(AIAutoMergeStrategy s) { m_strategy = s; }
+    AIAutoMergeStrategy GetStrategy() const { return m_strategy; }
+    AIAutoMergeResult PerformAutoMerge(class CMergeDoc* pDoc, int dstPane);
+    bool ShouldMergeDiff(const struct DIFFRANGE& diff, int srcPane, int dstPane);
+    static String GetStrategyName(AIAutoMergeStrategy s);
+private:
+    bool m_enabled;
+    AIAutoMergeStrategy m_strategy;
+    bool AnalyzeConservative(const DIFFRANGE& diff, int src, int dst);
+    bool AnalyzeBalanced(const DIFFRANGE& diff, int src, int dst);
+    double CalculateConfidence(const DIFFRANGE& diff, int src, int dst);
+};
+'@ | Out-File "winmerge/Src/AIAutoMerge.h" -Encoding UTF8
+
+      - name: Apply Patches
+        shell: pwsh
+        run: |
+          cd winmerge
+          # 添加选项常量
+          Add-Content Src/OptionsDef.h "`ninline const String OPT_AI_AUTO_MERGE_ENABLED{_T(`"Settings/AiAutoMergeEnabled`"s)};`ninline const String OPT_AI_AUTO_MERGE_STRATEGY{_T(`"Settings/AiAutoMergeStrategy`"s)};"
+          # 初始化选项
+          (Get-Content Src/OptionsInit.cpp) -replace '(OPT_ASK_MULTIWINDOW_CLOSE, true\);)', '$1`n`tpOptions->InitOption(OPT_AI_AUTO_MERGE_ENABLED, false);`n`tpOptions->InitOption(OPT_AI_AUTO_MERGE_STRATEGY, 1);' | Set-Content Src/OptionsInit.cpp
+
+      - name: Build
+        uses: microsoft/setup-msbuild@v2
+      - run: |
+          cd winmerge
+          nuget restore WinMerge.sln
+          msbuild WinMerge.sln /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinMerge-AI
+          path: winmerge/Build/x64/Release/WinMergeU.exe
