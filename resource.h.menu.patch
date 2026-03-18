@@ -1,0 +1,13 @@
+--- a/Src/resource.h
++++ b/Src/resource.h
+@@ -500,6 +500,10 @@
+ #define ID_L2R_ADVANCE                  33130
+ #define ID_R2L_ADVANCE                  33131
+ #define ID_COPY_FROM_MIDDLE             33132
++// AI Auto Merge commands
++#define ID_AI_AUTO_MERGE                33140
++#define ID_AI_AUTO_MERGE_SETTINGS       33141
++#define ID_AI_AUTO_MERGE_TOGGLE         33142
+ #define ID_COPY_TO_MIDDLE               33133
+ #define ID_COPY_FROM_LEFT_LINEDIFF      33134
+ #define ID_COPY_FROM_RIGHT_LINEDIFF     33135

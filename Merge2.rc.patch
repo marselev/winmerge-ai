@@ -1,0 +1,12 @@
+--- a/Src/Merge2.rc
++++ b/Src/Merge2.rc
+@@ -150,6 +150,9 @@ BEGIN
+     IDS_OPTIONSFILE_EDITOR_SYNTAX   "Syntax"
+     IDS_OPTIONSFILE_COMPARE         "Compare"
+     IDS_OPTIONSFILE_BINARY          "Binary"
++    IDS_OPTIONSFILE_AI_AUTO_MERGE   "AI Auto Merge"
++    IDS_AI_AUTO_MERGE_DESC          "AI Auto Merge uses intelligent algorithms to automatically resolve differences. Conservative: Only merge obvious changes. Balanced: Use context analysis. Aggressive: Merge most changes. Smart: Use pattern matching."
++    
+     IDS_COLORSCHEME_EDIT            "Edit"
+     IDS_COLORSCHEME_IMPORT          "Import"
+     IDS_COLORSCHEME_EXPORT          "Export"

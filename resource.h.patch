@@ -1,0 +1,25 @@
+--- a/Src/resource.h
++++ b/Src/resource.h
+@@ -200,6 +200,13 @@
+ #define IDC_MOVED_BLOCKS                1319
+ #define IDC_MATCH_SIMILAR_LINES         1320
+ 
++// AI Auto Merge Dialog
++#define IDD_PROP_AI_AUTO_MERGE          1400
++#define IDC_AI_AUTO_MERGE_ENABLE        1401
++#define IDC_AI_AUTO_MERGE_STRATEGY_LABEL 1402
++#define IDC_AI_AUTO_MERGE_STRATEGY      1403
++#define IDC_AI_AUTO_MERGE_DESCRIPTION   1404
++
+ // Projectfile dialog
+ #define IDD_DIALOG_PROJECT              2100
+ #define IDC_PROJ_LPATH                  2101
+@@ -900,6 +907,8 @@
+ #define IDS_OPTIONSFILE_COMPARE         18013
+ #define IDS_OPTIONSCOLORS_DIFFERENCE    18014
+ #define IDS_OPTIONSFILE_BINARY          18015
++#define IDS_OPTIONSFILE_AI_AUTO_MERGE   18016
++#define IDS_AI_AUTO_MERGE_DESC          18017
+ 
+ #define IDS_OPTIONSFILE_EDITOR          18020
+ #define IDS_OPTIONSFILE_EDITOR_GENERAL  18021

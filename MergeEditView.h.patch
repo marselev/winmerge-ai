@@ -1,0 +1,10 @@
+--- a/Src/MergeEditView.h
++++ b/Src/MergeEditView.h
+@@ -180,6 +180,7 @@ protected:
+ 	afx_msg void OnFileRight();
+ 	afx_msg void OnCopyToMiddle();
+ 	afx_msg void OnCopyLineDiffToSide(UINT nID);
++	afx_msg void OnAIAutoMerge();
+ 	//}}AFX_MSG
+ 
+ 	DECLARE_MESSAGE_MAP()

@@ -1,0 +1,20 @@
+--- a/Src/Merge.vcxproj
++++ b/Src/Merge.vcxproj
+@@ -200,6 +200,8 @@
+     <ClCompile Include="..\Src\AboutDlg.cpp" />
+     <ClCompile Include="..\Src\BasicFlatStatusBar.cpp" />
+     <ClCompile Include="..\Src\ClipboardHistory.cpp" />
++    <ClCompile Include="..\Src\AIAutoMerge.cpp" />
++    <ClCompile Include="..\Src\PropAIAutoMerge.cpp" />
+     <ClCompile Include="..\Src\ColorSchemes.cpp" />
+     <ClCompile Include="..\Src\CompareOptions.cpp" />
+     <ClCompile Include="..\Src\CompareStatisticsDlg.cpp" />
+@@ -400,6 +402,8 @@
+     <ClInclude Include="..\Src\AboutDlg.h" />
+     <ClInclude Include="..\Src\BasicFlatStatusBar.h" />
+     <ClInclude Include="..\Src\ClipboardHistory.h" />
++    <ClInclude Include="..\Src\AIAutoMerge.h" />
++    <ClInclude Include="..\Src\PropAIAutoMerge.h" />
+     <ClInclude Include="..\Src\ColorSchemes.h" />
+     <ClInclude Include="..\Src\CompareOptions.h" />
+     <ClInclude Include="..\Src\CompareStatisticsDlg.h" />

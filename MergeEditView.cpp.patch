@@ -1,0 +1,66 @@
+--- a/Src/MergeEditView.cpp
++++ b/Src/MergeEditView.cpp
+@@ -50,6 +50,7 @@
+ #include "ClipboardHistory.h"
+ #include "FileTransform.h"
+ #include "codepage_detect.h"
++#include "AIAutoMerge.h"
+ 
+ #ifdef _DEBUG
+ #define new DEBUG_NEW
+@@ -165,6 +166,7 @@ BEGIN_MESSAGE_MAP(CMergeEditView, CCrystalEditViewEx)
+ 	ON_COMMAND(ID_FILE_RIGHT, OnFileRight)
+ 	ON_COMMAND(ID_COPY_TO_MIDDLE, OnCopyToMiddle)
+ 	ON_COMMAND_RANGE(ID_COPY_TO_LEFT_LINEDIFF, ID_COPY_TO_RIGHT_LINEDIFF, OnCopyLineDiffToSide)
++	ON_COMMAND(ID_AI_AUTO_MERGE, OnAIAutoMerge)
+ 	//}}AFX_MSG_MAP
+ END_MESSAGE_MAP()
+ 
+@@ -2300,6 +2302,47 @@ void CMergeEditView::OnCopyLineDiffToSide(UINT nID)
+ 	}
+ }
+ 
++/**
++ * @brief Perform AI Auto Merge
++ */
++void CMergeEditView::OnAIAutoMerge()
++{
++	CMergeDoc* pDoc = GetDocument();
++	if (!pDoc)
++		return;
++	
++	// Get the destination pane (current pane)
++	int dstPane = m_nThisPane;
++	
++	// Perform AI Auto Merge
++	AIAutoMergeResult result = pDoc->DoAIAutoMerge(dstPane);
++	
++	// Show result message
++	if (result.success)
++	{
++		String msg = result.message;
++		if (result.conflictCount > 0)
++		{
++			msg += _T("\n\nSome differences require manual resolution.");
++			AfxMessageBox(msg.c_str(), MB_OK | MB_ICONINFORMATION);
++		}
++		else
++		{
++			AfxMessageBox(msg.c_str(), MB_OK | MB_ICONINFORMATION);
++		}
++	}
++	else
++	{
++		AfxMessageBox(result.message.c_str(), MB_OK | MB_ICONWARNING);
++	}
++	
++	// Update the location view
++	if (pDoc->GetLocationView())
++	{
++		pDoc->GetLocationView()->Invalidate();
++	}
++}
++
+ /**
+  * @brief Called when user selects "Save" from menu.
+  */

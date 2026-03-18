@@ -1,0 +1,13 @@
+--- a/Src/OptionsInit.cpp
++++ b/Src/OptionsInit.cpp
+@@ -100,6 +100,10 @@ void Init(COptionsMgr *pOptions)
+ 	pOptions->InitOption(OPT_AUTO_COMPLETE_SOURCE, 0);
+ 	pOptions->InitOption(OPT_IGNORE_SMALL_FILETIME, false);
+ 	pOptions->InitOption(OPT_ASK_MULTIWINDOW_CLOSE, true);
++	// AI Auto Merge options
++	pOptions->InitOption(OPT_AI_AUTO_MERGE_ENABLED, false);
++	pOptions->InitOption(OPT_AI_AUTO_MERGE_STRATEGY, 1);  // Default to BALANCED
++	
+ 	pOptions->InitOption(OPT_CP_DEFAULT_MODE, 0);
+ 	pOptions->InitOption(OPT_CP_DEFAULT_CUSTOM, 0);
+ 	pOptions->InitOption(OPT_CP_DETECT, false);

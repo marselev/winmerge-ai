@@ -1,0 +1,22 @@
+--- a/Src/MergeDoc.h
++++ b/Src/MergeDoc.h
+@@ -35,6 +35,7 @@
+ #include "FileTransform.h"
+ #include <vector>
+ #include <map>
+ #include <memory>
+ #include <optional>
++#include "AIAutoMerge.h"
+ 
+ /*
+  * @brief Additional action codes for WinMerge.
+@@ -261,6 +262,9 @@ public:
+ 	void CopyAllList(int srcPane, int dstPane);
+ 	void CopyMultipleList(int srcPane, int dstPane, int firstDiff, int lastDiff, int firstWordDiff = -1, int lastWordDiff = -1);
+ 	void CopyMultiplePartialList(int srcPane, int dstPane, int activePane, int firstDiff, int lastDiff, const CEPoint& ptStart, const CEPoint& ptEnd, bool bCharacter);
++	// AI Auto Merge function
++	AIAutoMergeResult DoAIAutoMerge(int dstPane);
++	bool IsAIAutoMergeEnabled() const;
+ 	void DoAutoMerge(int dstPane);
+ 	bool SanityCheckDiff(const DIFFRANGE& dr) const;
+ 	bool InlineDiffListCopy(int srcPane, int dstPane, int nDiff, int nFirstWordDiff, int nLastWordDiff, const std::vector<int>* pWordDiffIndice, bool bGroupWithPrevious = false, bool bUpdateView = true);

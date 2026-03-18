@@ -1,0 +1,25 @@
+--- a/Src/Merge.rc
++++ b/Src/Merge.rc
+@@ -400,6 +400,22 @@ BEGIN
+     PUSHBUTTON      "Cancel", IDCANCEL, 191, 120, 50, 14
+ END
+ 
++IDD_PROP_AI_AUTO_MERGE DIALOGEX 0, 0, 285, 120
++STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
++CAPTION "AI Auto Merge"
++FONT 8, "MS Shell Dlg", 0, 0, 0x1
++BEGIN
++    CONTROL         "Enable AI Auto Merge", IDC_AI_AUTO_MERGE_ENABLE,
++                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 7, 271, 10
++    LTEXT           "Merge Strategy:", IDC_AI_AUTO_MERGE_STRATEGY_LABEL,
++                    7, 25, 80, 8
++    COMBOBOX        IDC_AI_AUTO_MERGE_STRATEGY, 90, 23, 120, 80,
++                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
++    LTEXT           "AI Auto Merge uses intelligent algorithms to automatically resolve differences based on the selected strategy.",
++                    IDC_AI_AUTO_MERGE_DESCRIPTION, 7, 50, 271, 30,
++                    SS_NOPREFIX | SS_LEFTNOWORDWRAP
++END
++
+ IDD_DIALOG_PROJECT DIALOGEX 0, 0, 314, 228
+ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+ CAPTION "Project"

@@ -1,0 +1,12 @@
+--- a/Src/OptionsDef.h
++++ b/Src/OptionsDef.h
+@@ -96,6 +96,9 @@ inline const String OPT_AUTO_COMPLETE_SOURCE {_T("Settings/AutoCompleteSource"s
+ inline const String OPT_IGNORE_SMALL_FILETIME {_T("Settings/IgnoreSmallFileTime"s)};
+ inline const String OPT_ASK_MULTIWINDOW_CLOSE {_T("Settings/AskClosingMultipleWindows"s)};
+ inline const String OPT_PRESERVE_FILETIMES {_T("Settings/PreserveFiletimes"s)};
++// AI Auto Merge options
++inline const String OPT_AI_AUTO_MERGE_ENABLED {_T("Settings/AiAutoMergeEnabled"s)};
++inline const String OPT_AI_AUTO_MERGE_STRATEGY {_T("Settings/AiAutoMergeStrategy"s)};
+ 
+ inline const String OPT_CP_DEFAULT_MODE {_T("Settings/CodepageDefaultMode"s)};
+ inline const String OPT_CP_DEFAULT_CUSTOM {_T("Settings/CodepageDefaultCustomValue"s)};

@@ -1,0 +1,12 @@
+--- a/Src/Merge.rc
++++ b/Src/Merge.rc
+@@ -800,6 +800,9 @@ BEGIN
+         MENUITEM "Copy &Left",                  ID_COPY_LEFT
+         MENUITEM "Copy &Right",                 ID_COPY_RIGHT
+         MENUITEM SEPARATOR
++        MENUITEM "AI Auto &Merge",              ID_AI_AUTO_MERGE
++        MENUITEM "AI Auto Merge &Settings...",  ID_AI_AUTO_MERGE_SETTINGS
++        MENUITEM SEPARATOR
+         MENUITEM "Copy Left and Ad&vance",      ID_L2R_ADVANCE
+         MENUITEM "Copy Right and Ad&vance",     ID_R2L_ADVANCE
+         MENUITEM SEPARATOR

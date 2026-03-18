@@ -1,0 +1,80 @@
+--- a/Src/MergeDoc.cpp
++++ b/Src/MergeDoc.cpp
+@@ -47,6 +47,7 @@
+ #include "FileTransform.h"
+ #include "codepage_detect.h"
+ #include "stringdiffs.h"
++#include "AIAutoMerge.h"
+ 
+ #ifdef _DEBUG
+ #define new DEBUG_NEW
+@@ -180,6 +181,9 @@ CMergeDoc::CMergeDoc()
+ 	m_nBuffers = 0;
+ 	m_nGroups = 1;
+ 	m_bAutoMerged = false;
++	
++	// Initialize AI Auto Merge manager
++	InitAIAutoMergeManager();
+ }
+ 
+ CMergeDoc::~CMergeDoc()
+@@ -187,6 +191,9 @@ CMergeDoc::~CMergeDoc()
+ 	// delete views if they still exist (should not though)
+ 	for (int nBuffer = 0; nBuffer < m_nBuffers; nBuffer++)
+ 		m_ptBuf[nBuffer].reset();
++	
++	// Cleanup AI Auto Merge manager
++	CleanupAIAutoMergeManager();
+ }
+ 
+ /**
+@@ -1200,6 +1207,49 @@ void CMergeDoc::CopyMultiplePartialList(int srcPane, int dstPane, int activePane
+ 	}
+ }
+ 
++/**
++ * @brief Perform AI Auto Merge
++ * @param dstPane Destination pane for the merge
++ * @return Result of the AI auto merge operation
++ */
++AIAutoMergeResult CMergeDoc::DoAIAutoMerge(int dstPane)
++{
++	AIAutoMergeManager* pManager = GetAIAutoMergeManager();
++	if (!pManager)
++	{
++		AIAutoMergeResult result = { false, 0, 0, _T("AI Auto Merge manager not available") };
++		return result;
++	}
++	
++	// Ensure AI Auto Merge is enabled
++	if (!pManager->IsEnabled())
++	{
++		pManager->SetEnabled(true);
++	}
++	
++	// Perform the merge
++	AIAutoMergeResult result = pManager->PerformAutoMerge(this, dstPane);
++	
++	// Update views if merge was successful
++	if (result.success && result.mergedCount > 0)
++	{
++		ForEachView([](CMergeEditView* pView) { pView->Invalidate(); });
++		UpdateAllViews(nullptr);
++	}
++	
++	return result;
++}
++
++/**
++ * @brief Check if AI Auto Merge is enabled
++ * @return true if AI Auto Merge is enabled
++ */
++bool CMergeDoc::IsAIAutoMergeEnabled() const
++{
++	AIAutoMergeManager* pManager = GetAIAutoMergeManager();
++	return pManager && pManager->IsEnabled();
++}
++
+ /**
+  * @brief Merge all differences using default auto-merge
+  * @param dstPane Destination pane for the merge
