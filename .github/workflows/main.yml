@@ -1,0 +1,32 @@
+name: Build Main Only
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: winmerge/winmerge
+          path: winmerge
+
+      - uses: actions/checkout@v4
+        with:
+          path: ai-files
+
+      - run: copy ai-files\AIAutoMerge.h winmerge\Src\
+      - run: copy ai-files\AIAutoMerge.cpp winmerge\Src\
+      - run: copy ai-files\PropAIAutoMerge.h winmerge\Src\
+      - run: copy ai-files\PropAIAutoMerge.cpp winmerge\Src\
+
+      - uses: microsoft/setup-msbuild@v2
+      - uses: NuGet/setup-nuget@v2
+
+      - run: cd winmerge && nuget restore WinMerge.sln
+
+      - name: Build WinMergeU Only
+        run: cd winmerge && msbuild Src/Merge.vcxproj /p:Configuration=Release /p:Platform=x64 /m
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WinMerge-AI
+          path: winmerge/Build/x64/Release/WinMergeU.exe
